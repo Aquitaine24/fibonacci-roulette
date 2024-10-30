@@ -51,13 +51,13 @@ function App() {
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100 p-8">
       <h1 className="text-4xl font-bold text-gray-800 mb-8">
-        Fibonacci Sequence Generator
+        Fibonacci Betting Calculator
       </h1>
 
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <div className="mb-4">
           <label className="block text-gray-700 font-semibold mb-2">
-            Number of Terms:
+            Number of Bets:
           </label>
           <input
             type="number"
@@ -69,7 +69,7 @@ function App() {
 
         <div className="mb-4">
           <label className="block text-gray-700 font-semibold mb-2">
-            Starting Number:
+            Starting Bet:
           </label>
           <input
             type="number"
