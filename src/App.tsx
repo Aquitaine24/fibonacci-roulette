@@ -1,28 +1,36 @@
 import { useState } from "react";
 import "./App.css";
 
-function generateFibonacci(n: number, startingbet: number): string {
-  if (n <= 0) return "";
-  if (n === 1) return "0";
-  if (n === 2) return "0, ${startingbet}";
+function generateFibonacci(n: number, startingBet: number): number[] {
+  if (n <= 0) return [];
+  if (n === 1) return [0];
+  if (n === 2) return [0, startingBet];
 
-  const fibonacci: number[] = [0, startingbet];
+  const fibonacci: number[] = [0, startingBet];
 
   for (let i = 2; i < n; i++) {
     fibonacci.push(fibonacci[i - 1] + fibonacci[i - 2]);
   }
 
-  return fibonacci.join(", ");
+  return fibonacci;
+}
+
+function sumFibonacci(sequence: number[]): number {
+  return sequence.reduce((acc, num) => acc + num, 0);
 }
 
 function App() {
-  const [userNumber, setUserNumber] = useState<number>(10); // Default value for terms
-  const [start, setStart] = useState<number>(2); // Default starting number
-  const [sequence, setSequence] = useState<string>(
+  const [userNumber, setUserNumber] = useState<number>(10);
+  const [start, setStart] = useState<number>(2);
+  const [sequence, setSequence] = useState<number[]>(
     generateFibonacci(userNumber, start)
   );
+  const [sum, setSum] = useState<number>(sumFibonacci(sequence));
+
   const handleGenerate = () => {
-    setSequence(generateFibonacci(userNumber, start));
+    const newSequence = generateFibonacci(userNumber, start);
+    setSequence(newSequence);
+    setSum(sumFibonacci(newSequence));
   };
 
   return (
@@ -34,7 +42,7 @@ function App() {
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <div className="mb-4">
           <label className="block text-gray-700 font-semibold mb-2">
-            Number of Terms:
+            Number of Bets:
           </label>
           <input
             type="number"
@@ -46,7 +54,7 @@ function App() {
 
         <div className="mb-4">
           <label className="block text-gray-700 font-semibold mb-2">
-            Starting Number:
+            Starting Bet:
           </label>
           <input
             type="number"
@@ -66,7 +74,14 @@ function App() {
 
       <h2 className="text-2xl font-semibold text-gray-800 mt-8">Sequence:</h2>
       <p className="text-gray-700 text-center mt-4 bg-gray-200 p-4 rounded-lg max-w-lg w-full">
-        {sequence}
+        {sequence.join(", ")}
+      </p>
+
+      <h2 className="text-2xl font-semibold text-gray-800 mt-8">
+        Total Money Required:
+      </h2>
+      <p className="text-gray-700 text-center mt-4 bg-gray-200 p-4 rounded-lg max-w-lg w-full">
+        ${sum}
       </p>
     </div>
   );
