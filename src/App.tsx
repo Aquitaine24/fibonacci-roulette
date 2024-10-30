@@ -19,18 +19,33 @@ function sumFibonacci(sequence: number[]): number {
   return sequence.reduce((acc, num) => acc + num, 0);
 }
 
+function calculatePayout(sequence: number[]): number[] {
+  const payouts: number[] = [];
+  let previousBetsTotal = 0;
+
+  for (let i = 0; i < sequence.length; i++) {
+    const payout = sequence[i] * 3 - previousBetsTotal;
+    payouts.push(payout);
+    previousBetsTotal += sequence[i];
+  }
+
+  return payouts;
+}
+
 function App() {
-  const [userNumber, setUserNumber] = useState<number>(10);
-  const [start, setStart] = useState<number>(2);
+  const [userNumber, setUserNumber] = useState<number>(11);
+  const [start, setStart] = useState<number>(1);
   const [sequence, setSequence] = useState<number[]>(
     generateFibonacci(userNumber, start)
   );
   const [sum, setSum] = useState<number>(sumFibonacci(sequence));
+  const [payouts, setPayouts] = useState<number[]>(calculatePayout(sequence));
 
   const handleGenerate = () => {
     const newSequence = generateFibonacci(userNumber, start);
     setSequence(newSequence);
     setSum(sumFibonacci(newSequence));
+    setPayouts(calculatePayout(newSequence)); // Calculate new payouts
   };
 
   return (
@@ -42,7 +57,7 @@ function App() {
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <div className="mb-4">
           <label className="block text-gray-700 font-semibold mb-2">
-            Number of Bets:
+            Number of Terms:
           </label>
           <input
             type="number"
@@ -54,7 +69,7 @@ function App() {
 
         <div className="mb-4">
           <label className="block text-gray-700 font-semibold mb-2">
-            Starting Bet:
+            Starting Number:
           </label>
           <input
             type="number"
@@ -72,16 +87,21 @@ function App() {
         </button>
       </div>
 
-      <h2 className="text-2xl font-semibold text-gray-800 mt-8">Sequence:</h2>
+      <h2 className="text-2xl font-semibold text-gray-800 mt-8">Place Bets:</h2>
       <p className="text-gray-700 text-center mt-4 bg-gray-200 p-4 rounded-lg max-w-lg w-full">
-        {sequence.join(", ")}
+        {sequence.map((num) => `$${num}`).join(", ")}
       </p>
 
       <h2 className="text-2xl font-semibold text-gray-800 mt-8">
-        Total Money Required:
+        Money Required:
       </h2>
       <p className="text-gray-700 text-center mt-4 bg-gray-200 p-4 rounded-lg max-w-lg w-full">
         ${sum}
+      </p>
+
+      <h2 className="text-2xl font-semibold text-gray-800 mt-8">Payouts:</h2>
+      <p className="text-gray-700 text-center mt-4 bg-gray-200 p-4 rounded-lg max-w-lg w-full">
+        {payouts.map((payout) => `$${payout}`).join(", ")}
       </p>
     </div>
   );
